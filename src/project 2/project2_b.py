@@ -1,59 +1,45 @@
-
 def open_file():
     while True:
         file = input('Enter input file:')
-        if file=="measles.txt":
-            return file
-        else:
-            print("File should be \"measles.txt\"")
+        try:
+            handle = open(file,'r')
+            return handle
+        except:
+            print('File not found!!!')
             continue
 
 
-#Function compare income and the integers
-def ref(income):
-    if income==1:
-        income="WB_LI"
-        return income
-    elif income==2:
-        income="WB_LMI"
-        return income
-    elif income==3:
-        income="WB_UMI"
-        return income
-    elif income==4:
-        income="WB_HI"
-        return income
+def process_file(file_object):
+    year = input('Enter year: ')
+    income = input('Enter the income level: ')
+    if income == '1':
+        income = "WB_LI"
+    elif income == '2':
+        income = "WB_LMI"
+    elif income == '3':
+        income = "WB_UMI"
+    elif income == '4':
+        income = "WB_HI"
     else:
         print("Invalid income")
 
-while True:
-    try:
-        file=open_file()
-        year = int(input('Enter year:'))
-        year = str(year)
-        income = int(input('Enter income level:'))
-        income2=ref(income)
-        measles = open(file, 'r')
-        count=0
-        add=0
-        lowest=99
-        highest=0
-        for line in measles:
-            if (income2 in line[51:57]) and (year==line[88:92]):
-                child=line[59:62]
-                child2=int(child)
-                if child2>highest:
-                    highest=child2
-                if child2<lowest:
-                    lowest=child2
-                add+=child2
-                count+=1
-        average=add/count
-        print("Lowest percentage =",lowest)
-        print("Highest percentage =",highest)
-        print("Average percentage =",average)
-        print("Success!!")
-        break
-    except:
-        print("Error!! , Invalid Input!!")
-        continue
+    list = []
+    country_list = []
+    for line in file_object:
+        if year in line[88:92] and income in line[51:57]:
+            percent = int(line[59:61].strip())
+            list.append(percent)
+            #print(line[59:62])
+            #print(list)
+            country_list.append(line[0:49].strip())
+    print('Count of records: ',len(list))
+    print('Average percentage: ',round(sum(list)/len(list), 1))
+    # highc = max(list)
+    # hcountry = None
+    # for i in country_list:
+    #     pass
+    print(max(list))
+    print(min(list))
+    print('Country with highest percentage: ',max(country_list))
+    print('Country with lowest percentage: ',min(country_list))
+process_file(open_file())

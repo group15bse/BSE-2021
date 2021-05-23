@@ -6,13 +6,16 @@ try:
     elif int(inp):
         if len(inp) <= 4:
            pass
+        else:
+            print("Invalid inp length!!!")
+            exit()
     else:
         print('Invalid input!!!')
 
     output = input('Enter a file name for output: ')
 
     if not '.txt' in output:
-        print('File name should be in txt format with .txt ext.')
+        print('File name should be in txt format with .txt extension.')
         exit()
     save = open(output,'w')
 
